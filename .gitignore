@@ -1,2 +1,3 @@
-./Problem_5/node_modules
-./Problem_5/package-lock.json
+Problem_5/node_modules
+Problem_5/package-lock.json
+Problem_5/secrets.json
