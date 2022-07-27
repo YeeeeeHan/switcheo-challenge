@@ -35,8 +35,8 @@ It has the following responsibilities:
    | Scenario: Response from blockchain node  | Response to client| Retry | Publish to Kafka |
    | ------------- | ------------- | ------------- |
    | Success RPC response  | `200 - OK`  | No | Yes - `Success` |
-   | Failed RPC response  | `502 - Bad Gateway`  | Yes |Yes - `Failure` |
-   | > 10 seconds delay in RPC response (1%) | `504 - Gateway Timeout`  | No |Yes - `Timeout` |
+   | Failed RPC response  | `502 - Bad Gateway`  | Yes | Yes - `Failure` |
+   | > 10 seconds delay in RPC response (1%) | `504 - Gateway Timeout`  | No | Yes - `Timeout` |
    | RPC responds 30 seconds later | NIL | Depends | Yes - `Success/Failure` |
 
 
