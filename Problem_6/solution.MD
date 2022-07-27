@@ -14,11 +14,11 @@ The **Broadcaster** Service's main concern is broadcasting transaction to the bl
 It has the following responsibilities:
 1. Interfacing with the client
     * It exposes HTTP endpoints for clients to make HTTP calls (`POST /broadcast\_transaction`, `POST /retry_transaction`)
-    * Returning the appropriate HTTP status codes (shown below) according to the response from blockchain node
+    * Returning the appropriate HTTP status codes (shown below) according to the response from the blockchain node
 2. Signing of transaction
     * This service contains the main logic to sign the transaction according to an encryption or signing algorithm
 3. Interfacing with the blockchain network
-    * Upon signing the transation, it makes RPC requests to blockchain node, in order to broadcast it to the blockchain network
+    * Upon signing the transaction, it makes RPC requests to blockchain node, in order to broadcast it to the blockchain network
     * The service then awaits the response from the blockchain node
 4. Publishing to Kafka
     * This service is also the main publisher of events into the Kafka "history" topic
@@ -32,12 +32,12 @@ It has the following responsibilities:
     * In the 1% of the time that the node responds after 30 seconds, the server will timeout after 10 seconds, return a `504 - Gateway Timeout`, and publish the timeout event on Kafka. This is to ensure the responsiveness of the server and to limit the client's waiting time.
     * However, once a response is received at the end of 30 seconds, it is still published to the kafka topic as per normal (clients can use the **History** service to view result of their timed-out transactions)
 
-   | Scenario: Response from blockchain node  | Response to client| Publish to Kafka | 
+   | Scenario: Response from blockchain node  | Response to client| Retry | Publish to Kafka |
    | ------------- | ------------- | ------------- |
-   | Success RPC response  | `200 - OK`  | Yes - `Success` |
-   | Failed RPC response  | `502 - Bad Gateway`  | Yes - `Failure` |
-   | > 10 seconds delay in RPC response (1%) | `504 - Gateway Timeout`  | Yes - `Timeout` |
-   | RPC responds 30 seconds later | NIL | Yes - `Success/Failure` |
+   | Success RPC response  | `200 - OK`  | No | Yes - `Success` |
+   | Failed RPC response  | `502 - Bad Gateway`  | Yes |Yes - `Failure` |
+   | > 10 seconds delay in RPC response (1%) | `504 - Gateway Timeout`  | No |Yes - `Timeout` |
+   | RPC responds 30 seconds later | NIL | Depends | Yes - `Success/Failure` |
 
 
 ## 2. The Reconciliation Service
