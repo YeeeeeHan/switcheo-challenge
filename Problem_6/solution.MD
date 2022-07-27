@@ -1,14 +1,14 @@
 
 ## Overview
-![Untitled](https://i.ibb.co/jL2HRhp/overview.png)
-
 This image is an overview of the Transaction Broadcaster Service which consists of 3 services ( **Broadcaster**,  **Reconciliation**,  **History**) that work hand-in-hand to broadcast transactions to an EVM-compatible blockchain network in an accurate and fault-tolerant manner. Additionally, a **Kafka message queue** and a persistent **database store** is further used to acheive the aforementioned services.
+
+![Untitled](https://i.ibb.co/jL2HRhp/overview.png)
 
 In the following sections, we will examine the 3 services in further detail.
 
 ## The Broadcaster Service
-![Untitled](https://i.ibb.co/d7zyz3G/TBS-drawio.png)
 The **Broadcaster** Service's main concern is broadcasting transaction to the blockchain network. It has the following responsibilities:
+![Untitled](https://i.ibb.co/d7zyz3G/TBS-drawio.png)
 1. Interfacing with the client
     * It exposes HTTP endpoints for clients to make HTTP calls (POST /broadcast\_transaction, POST /retry_transaction)
     * Returning the appropriate HTTP status codes (shown below) according to the response from blockchain node
@@ -38,9 +38,9 @@ The **Broadcaster** Service's main concern is broadcasting transaction to the bl
 
 
 ## The Reconciliation Service
-![Untitled](https://i.ibb.co/HnJh0X0/recon-drawio.png)
-
 The **Reconciliation** Service's main concern is to ensure that transactions with successful status codes are actually broadcasted and living in the blockchain network. It does so by subscribing to the Kafka topic, consuming only the events that has been marked as a "successful" transaction. Next, it will query the blockchain node via RPC requests to determine if the transaction is found in the network.
+
+![Untitled](https://i.ibb.co/HnJh0X0/recon-drawio.png)
 
 There are 2 scenarios that would arise:
 1. Tranasctions from the kafka topic marked as successful, is found in the network - This is a desired behaviour, no action required.
@@ -51,9 +51,10 @@ This ensures that any transaction broacast request where `200 - OK` is returned 
 
 
 ## The History Service
+The **History** Service's main concern is to log down all attempts at transaction broadcasting, so that clients can view the list of transactions that passed or failed. It has the following responsibilities:
+
 ![Untitled](https://i.ibb.co/zN691Wc/history-drawio.png)
 
-The **History** Service's main concern is to log down all attempts at transaction broadcasting, so that clients can view the list of transactions that passed or failed. It has the following responsibilities:
 1. Subscribe to Kafka topic and write to database
     * This service consumes ALL events in this topic and writes it to the database for persistent storage
     * The events are split into 3 main categories (`Success`, `Failure`, `Timeout`, `Reconciled`)
