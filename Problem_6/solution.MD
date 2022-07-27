@@ -71,3 +71,5 @@ It has the following responsibilities:
     * `Reconciled` is a status that happens when this service encounters a *duplicate* `Success` response for the same transaction ID. This means that the previous `Success` status was inaccurate, as the **Reconciliation** service detected a mismatch on the network. The previous `Success` status would be updated to `Reconciled`, with the latest `Success` entry being the correct version.
 2. Providing an interface to the DB - to display page that shows the list of transactions that passed or failed
     * This service will also expose an endpoint `GET /transaction_list` to allow clients to query transaction history data, in order to render the page of historical transactions.
+
+~ 837 words
