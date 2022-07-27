@@ -42,9 +42,11 @@ It has the following responsibilities:
 
 
 ## 2. The Reconciliation Service
-The **Reconciliation** Service's main concern is to ensure that transactions with successful status codes are actually broadcasted and living in the blockchain network. It does so by subscribing to the Kafka topic, consuming only the events that has been marked as a "successful" transaction. Next, it will query the blockchain node via RPC requests to determine if the transaction is found in the network.
+The **Reconciliation** Service's main concern is to ensure that transactions with successful status codes are actually broadcasted and living in the blockchain network. 
 
 ![Untitled](https://i.ibb.co/HnJh0X0/recon-drawio.png)
+
+It does so by subscribing to the Kafka topic, consuming only the events that has been marked as a "successful" transaction. Next, it will query the blockchain node via RPC requests to determine if the transaction is found in the network.
 
 There are 2 scenarios that would arise:
 1. Tranasctions from the kafka topic marked as successful, is found in the network - This is a desired behaviour, no action required.
