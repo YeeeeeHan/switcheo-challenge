@@ -32,8 +32,8 @@ It has the following responsibilities:
     * In the 1% of the time that the node responds after 30 seconds, the server will timeout after 10 seconds, return a `504 - Gateway Timeout`, and publish the timeout event on Kafka. This is to ensure the responsiveness of the server and to limit the client's waiting time.
     * However, once a response is received at the end of 30 seconds, it is still published to the kafka topic as per normal (clients can use the **History** service to view result of their timed-out transactions)
 
-   | Scenario: Response from blockchain node  | Response to client| Retry | Publish to Kafka |
-   | ------------- | ------------- | ------------- |
+   | Scenario: Response from blockchain node  | Response to client | Retry | Publish to Kafka |
+   | ------------- | ------------- | ------------- | ------------- |
    | Success RPC response  | `200 - OK`  | No | Yes - `Success` |
    | Failed RPC response  | `502 - Bad Gateway`  | Yes | Yes - `Failure` |
    | > 10 seconds delay in RPC response (1%) | `504 - Gateway Timeout`  | No | Yes - `Timeout` |
