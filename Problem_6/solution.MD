@@ -25,7 +25,7 @@ It has the following responsibilities:
     * **ALL** Responses from the blockchain node will be published as events in the topic, allowing other subscribing services to consume asynchronously
     * The message queue is chosen because both **Reconciliation** and **History** services require status information of the transactions executed, but do not need to be operating synchronously with each other (further elaborated below)
 5. Handling retries
-    * Since this service is the first to receive the response from the block chain node, it makes sense for it to be in-charge of error handling
+    * Since this service is the first to receive the response from the blockchain node, it makes sense for it to be in-charge of error handling
     * If it receives a failure code from the blockchain node, it will retry immediately (after publishing the failure to Kafka topic)
 6. Timeout
     * In the 95% of the time that the blockchain node responds timely, the server will return `200 - OK` or `502 - Bad Gateway` status codes to the client in 2 seconds
@@ -46,11 +46,11 @@ The **Reconciliation** Service's main concern is to ensure that transactions wit
 
 ![Untitled](https://i.ibb.co/HnJh0X0/recon-drawio.png)
 
-It does so by subscribing to the Kafka topic, consuming only the events that has been marked as a "successful" transaction. Next, it will query the blockchain node via RPC requests to determine if the transaction is found in the network.
+It does so by subscribing to the Kafka topic, listening only the events that has been marked as a "successful" transaction. Whenever a success event occurs, it will query the blockchain node via RPC requests to determine if the transaction is found in the network.
 
 There are 2 scenarios that would arise:
-1. Tranasctions from the kafka topic marked as successful, is found in the network - This is a desired behaviour, no action required.
-2. Tranasctions from the kafka topic marked as successful, are *NOT* found in the network -In this case, the **Reconciliation** Service will invoke the **Broadcaster** Service to retry the transaction broadcast.
+1. Transactions from the kafka topic marked as successful, are found in the network - This is a desired behaviour, no action required
+2. Transactions from the kafka topic marked as successful, are *NOT* found in the network - In this case, the **Reconciliation** Service will invoke the **Broadcaster** Service to retry the transaction broadcast
 
 This ensures that any transaction broacast request where `200 - OK` is returned to the client is actually found in the blockchain network.
 
@@ -65,9 +65,9 @@ It has the following responsibilities:
 
 1. Subscribe to Kafka topic and write to database
     * This service consumes ALL events in this topic and writes it to the database for persistent storage
-    * The events are split into 3 main categories (`Success`, `Failure`, `Timeout`, `Reconciled`)
+    * The events are split into 4 main categories (`Success`, `Failure`, `Timeout`, `Reconciled`)
     * `Success` and `Failure` events refer to the response from the blockchain network
-    * `Timeout` is a temporary status that lasts as long as the RPC response is not received. Upon receiving a `Success/Failure` after the 30 seconds, the service will update the DB to reflect the correct eventual status
+    * `Timeout` is a temporary status that lasts as long as an RPC response is not received. Upon receiving a `Success/Failure` after the 30 seconds, the service will update the DB to reflect the correct eventual status
     * `Reconciled` is a status that happens when this service encounters a *duplicate* `Success` response for the same transaction ID. This means that the previous `Success` status was inaccurate, as the **Reconciliation** service detected a mismatch on the network. The previous `Success` status would be updated to `Reconciled`, with the latest `Success` entry being the correct version.
 2. Providing an interface to the DB - to display page that shows the list of transactions that passed or failed
-    * This service will also expose an endpoint to allow clients to query transation history information, possibly to render the page of historical transactions.
+    * This service will also expose an endpoint `GET /transaction_list` to allow clients to query transaction history data, in order to render the page of historical transactions.
