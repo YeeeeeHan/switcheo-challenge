@@ -14,7 +14,7 @@ import {randomHashGenerator} from "../helper/contract";
 import {validateAddress, validateAmount,} from "../helper/validate"
 import {ClickAwayListener, Container} from "@mui/material";
 import {sampleColumns, sampleRows} from "../helper/sampleData"
-import BasicCard from "./txncard";
+import BasicCard from "./basicCard";
 
 
 const theme = createTheme();
