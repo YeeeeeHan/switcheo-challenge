@@ -3,7 +3,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import {Container} from "@mui/material";
-import BasicCard from "./txncard";
 
 
 export default function DataTable({rowsNcol}) {
@@ -12,7 +11,7 @@ export default function DataTable({rowsNcol}) {
             <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
                 <Grid item xs={12} rowSpacing={1}>
                     <Container>
-                        <div style={{ height: 500, width: '100%' }}>
+                        <div style={{ height: 680, width: '100%' }}>
                             <DataGrid
                                 initialState={{
                                     sorting: {
@@ -21,8 +20,8 @@ export default function DataTable({rowsNcol}) {
                                 }}
                                 rows={rowsNcol.rows}
                                 columns={rowsNcol.columns}
-                                pageSize={7}
-                                rowsPerPageOptions={[7]}
+                                pageSize={11}
+                                rowsPerPageOptions={[11]}
                             />
                         </div>
                     </Container>

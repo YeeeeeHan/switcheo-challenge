@@ -3,9 +3,14 @@ export function validateAddress(add) {
         return "Please Enter Address";
     }
 
-    if (add.length > 2 && add.slice(0,2) !== "0x") {
+    if (add.slice(0,2) !== "0x") {
         return "Address must start with 0x";
     }
+
+    if (add.length !== 42) {
+        return "Please Enter Valid address (42 characters)";
+    }
+
     return ""
 }
 

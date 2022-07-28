@@ -132,7 +132,7 @@ export default function SignInSide() {
                                     label="Destination address"
                                     name="address"
                                     helperText={err.address ? err.addressMsg : ""}
-                                    onChange={e => setInputs({...inputs, address: e.target.value})}
+                                    onChange={e => {setInputs({...inputs, address: e.target.value});handleClickAwayAddress();}}
                                     autoFocus
                                 />
                             </ClickAwayListener>
@@ -144,10 +144,10 @@ export default function SignInSide() {
                                     fullWidth
                                     name="amount"
                                     label="Amount"
-                                    type="amount"
+                                    type="number"
                                     id="amount"
                                     helperText={err.amount ? err.amountMsg : ""}
-                                    onChange={e => setInputs({...inputs, amount: parseInt(e.target.value, 10)})}
+                                    onChange={e => {setInputs({...inputs, amount: parseInt(e.target.value, 10)});handleClickAwayAmount();}}
                                 />
                             </ClickAwayListener>
                             <TextField
@@ -173,7 +173,7 @@ export default function SignInSide() {
                     </Box>
                 </Grid>
                 <Grid item xs={false} sm={6} md={8}>
-                    {/*<TransactionHistory components={components}/>*/}
+                    <br/>
                     <DataTable rowsNcol={rowsNcol}/>
                 </Grid>
             </Grid>
