@@ -24,7 +24,7 @@ export default function BasicCard({comp}) {
                     Word of the Day
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    {comp}
+                    Sent {comp.amount} tokens to {comp.address}
                 </Typography>
             </CardContent>
         </Card>
