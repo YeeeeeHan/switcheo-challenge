@@ -3,19 +3,18 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import TransactionHistory from "./history";
 import DataTable from "./table";
-import {padTo2Digits, unixToDateTime, timeDifference} from "../helper/datetime.js";
+import {unixToDateTime, timeDifference} from "../helper/datetime.js";
 import {randomHashGenerator} from "../helper/contract";
+import {validateAddress, validateAmount,} from "../helper/validate"
+import {ClickAwayListener} from "@mui/material";
+import {sampleColumns, sampleRows} from "../helper/sampleData"
 
 // function Copyright(props) {
 //     return (
@@ -31,123 +30,25 @@ import {randomHashGenerator} from "../helper/contract";
 // }
 
 const theme = createTheme();
-
 export default function SignInSide() {
-    const columns = [
-        {field: 'txnHash', headerName: 'Txn Hash', width: 210},
-        {
-            field: 'date',
-            headerName: 'date',
-            type: 'date',
-            width: 220,
-            valueFormatter: (params) => {
-                // first converts to JS Date, then to locale option through date-fns
-                return params.value;
-            },
-            valueGetter: (params) => {
-                // new Date(params.value).toLocaleDateString('en-US');
 
-                return unixToDateTime(params.value)[1]
-            }
-        },
-        {
-            field: 'age',
-            headerName: 'age',
-            description: 'This column has a value getter and is not sortable.',
-            sortable: false,
-            width: 130,
-            valueGetter: (params) => {
-                return timeDifference(Date.now(), params.value)
-            }
-        },
-        {field: 'to', headerName: 'To', width: 210},
-        {field: 'amount', type: 'number', headerName: 'amount', width: 70},
-    ];
-
-
-    const [rows, setRows] = useState([
-        {
-            id: 1,
-            txnHash: randomHashGenerator(),
-            date: 1652002362222,
-            age: 1652002362222,
-            to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-            amount: 35,
-        },
-        {
-            id: 2,
-            txnHash: randomHashGenerator(),
-            date: 1651002362333,
-            age: 1651002362333,
-            to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-            amount: 35,
-        },
-        {
-            id: 3,
-            txnHash: randomHashGenerator(),
-            date: 1658002362234,
-            age: 1658002362234,
-            to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-            amount: 35,
-        },
-        {
-            id: 4,
-            txnHash: randomHashGenerator(),
-            date: 1655002334554,
-            age: 1655002334554,
-            to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-            amount: 35,
-        },
-        {
-            id: 5,
-            txnHash: randomHashGenerator(),
-            date: 1656002398735,
-            age: 1656002398735,
-            to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-            amount: 35,
-        },
-        {
-            id: 6,
-            txnHash: randomHashGenerator(),
-            date: 165700234342,
-            age: 165700234342,
-            to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-            amount: 35,
-        },
-        {
-            id: 7,
-            txnHash: randomHashGenerator(),
-            date: 165700234342,
-            age: 165700234342,
-            to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-            amount: 35,
-        },
-        {
-            id: 8,
-            txnHash: randomHashGenerator(),
-            date: 1649002362850,
-            age: 1649002362850,
-            to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-            amount: 35,
-        },
-        {
-            id: 9,
-            txnHash: randomHashGenerator(),
-            date: 1658002362850,
-            age: 1658002362850,
-            to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-            amount: 35,
-        },
-    ])
-
+    // Populate with sample data
+    const [rows, setRows] = useState(sampleRows)
     let rowsNcol = {
-        rows,
-        columns
+        rows: rows,
+        columns: sampleColumns
     }
 
+
+    // Called when submit button is clicked
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
+
+        if (!handleValidate(formData)) {
+            return
+        }
+
         const data = {
             id: Date.now(),
             txnHash: randomHashGenerator(),
@@ -159,7 +60,44 @@ export default function SignInSide() {
 
         setRows(oldRows => [...oldRows, data])
 
-        console.log(rowsNcol);
+    };
+
+    // Form submission validation
+    const handleValidate = (formData) => {
+        if (validateAddress(formData.get('address')) !== "") {
+            alert('Address: ' + validateAddress(formData.get('address')))
+            return false
+        }
+
+        if (validateAmount(formData.get('amount')) !== "") {
+            alert('Amount: ' + validateAmount(formData.get('amount')))
+            return false
+        }
+        return true
+    }
+
+
+    // Handles and stored all form in put changes
+    const [inputs, setInputs] = useState({address: "", amount: -1});
+    const [err, setErr] = useState({address: false, addressMsg: "", amount: false, amountMsg: ""})
+
+    // Input clickaway validation
+    const handleClickAwayAddress = () => {
+        if (validateAddress(inputs.address) !== "") {
+            setErr({...err, address: true, addressMsg: validateAddress(inputs.address)})
+            return
+        }
+
+        setErr({...err, address: false, addressMsg: ""})
+    };
+    const handleClickAwayAmount = () => {
+        console.log(inputs.amount)
+        if (validateAmount(inputs.amount) !== "") {
+            setErr({...err, amount: true, amountMsg: validateAmount(inputs.amount)})
+            return
+        }
+
+        setErr({...err, amount: false, amountMsg: ""})
     };
 
 
@@ -184,24 +122,34 @@ export default function SignInSide() {
                             FancyForm
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1}}>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="address"
-                                label="Destination address"
-                                name="address"
-                                autoFocus
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="amount"
-                                label="Amount"
-                                type="amount"
-                                id="amount"
-                            />
+                            <ClickAwayListener onClickAway={handleClickAwayAddress}>
+                                <TextField
+                                    error={err.address}
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="address"
+                                    label="Destination address"
+                                    name="address"
+                                    helperText={err.address ? err.addressMsg : ""}
+                                    onChange={e => setInputs({...inputs, address: e.target.value})}
+                                    autoFocus
+                                />
+                            </ClickAwayListener>
+                            <ClickAwayListener onClickAway={handleClickAwayAmount}>
+                                <TextField
+                                    error={err.amount}
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="amount"
+                                    label="Amount"
+                                    type="amount"
+                                    id="amount"
+                                    helperText={err.amount ? err.amountMsg : ""}
+                                    onChange={e => setInputs({...inputs, amount: parseInt(e.target.value, 10)})}
+                                />
+                            </ClickAwayListener>
                             <TextField
                                 margin="normal"
                                 required
