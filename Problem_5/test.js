@@ -47,7 +47,7 @@ const TOKENS = [    // token contract addresses
 ];
 
 // you can use your own RPC provider url (no need to deploy to mainnet)
-const provider = new ethers.providers.JsonRpcProvider(require("./secrets.json").infuralink)
+const provider = new ethers.providers.JsonRpcProvider("https://rinkeby.infura.io/v3/b2c778d0aa894a8a843d2e664dc63a72")
 
 const test = async () => {
     const contract = new ethers.Contract(ADDR, ABI, provider);
