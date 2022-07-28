@@ -22,7 +22,7 @@ export const sampleColumns = [
         headerName: 'age',
         description: 'This column has a value getter and is not sortable.',
         sortable: false,
-        width: 110,
+        width: 120,
         valueGetter: (params) => {
             return timeDifference(Date.now(), params.value)
         }
@@ -48,7 +48,7 @@ export const sampleRows = [
         date: 1651002362333,
         age: 1651002362333,
         to: '0xddb33f77bf8399d6351fd0c627e3264d74500d22',
-        amount: 765756,
+        amount: 76346,
     },
     {
         id: 3,
@@ -65,45 +65,5 @@ export const sampleRows = [
         age: 1655002334554,
         to: '0x839db33f77bfc629d6351fd0d7e3264d74500d22',
         amount: 785,
-    },
-    {
-        id: 5,
-        txnHash: '0xbfc629d63839db33f7751fd0d7e3264d74500d22',
-        date: 1656002398735,
-        age: 1656002398735,
-        to: '0x839db33f77bfc629d6351fd0d7e3264d74500d22',
-        amount: 55546,
-    },
-    {
-        id: 6,
-        txnHash: '0xbfc629d6351f839db33f77d0d7e3264d74500d22',
-        date: 165700234342,
-        age: 165700234342,
-        to: '0xb33f77b8399d6351fd0ddfc627e3264d74500d22',
-        amount: 75675,
-    },
-    {
-        id: 7,
-        txnHash: '0x9d6351fd0d7839db33f77bfc62e3264d74500d22',
-        date: 165700234342,
-        age: 165700234342,
-        to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-        amount: 789,
-    },
-    {
-        id: 8,
-        txnHash: '0x629d6351f839db33f77bfcd0d7e3264d74500d22',
-        date: 1649002362850,
-        age: 1649002362850,
-        to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-        amount: 567,
-    },
-    {
-        id: 9,
-        txnHash: '0x51fd0d7e839db33f77bfc629d633264d74500d22',
-        date: 1658002362850,
-        age: 1658002362850,
-        to: '0x8399d6351fd0ddb33f77bfc627e3264d74500d22',
-        amount: 56756,
     },
 ]

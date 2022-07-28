@@ -11,8 +11,9 @@ export default function DataTable({rowsNcol}) {
             <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
                 <Grid item xs={12} rowSpacing={1}>
                     <Container>
-                        <div style={{ height: 680, width: '100%' }}>
+                        <div style={{ height: 580, width: '100%' }}>
                             <DataGrid
+                                animateRows={true}
                                 initialState={{
                                     sorting: {
                                         sortModel: [{ field: 'date', sort: 'desc' }],
