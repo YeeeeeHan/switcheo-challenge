@@ -7,11 +7,11 @@ cd Problem_2 && npm install && npm run start
 ```
 ### Problem_4
 ```bash
-cd Problem_4 && npm install && ts-node ./retrieve-holders.ts
+cd Problem_4 && npm install && npx ts-node ./retrieve-holders.ts
 ```
 ### Problem_5
 ```bash
-cd Problem_5 && npm install && ./test.js
+cd Problem_5 && npm install && node ./test.js
 ```
 ### Problem_6
 ### Problem_7
