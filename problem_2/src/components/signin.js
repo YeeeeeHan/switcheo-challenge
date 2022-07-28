@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -30,14 +30,21 @@ import TransactionHistory from "./history";
 const theme = createTheme();
 
 export default function SignInSide() {
+    const [components, setComponents] = useState([
+        "ComponentA", "ComponentB", "ComponentC"
+    ])
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        setComponents(oldComponents => [...oldComponents, data.get('address')])
         console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+            add: data.get('address'),
         });
+        console.log(components);
     };
+
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -101,7 +108,7 @@ export default function SignInSide() {
                     </Box>
                 </Grid>
                 <Grid item xs={false} sm={4} md={7}>
-                    <TransactionHistory/>
+                    <TransactionHistory components={components}/>
                 </Grid>
             </Grid>
         </ThemeProvider>
