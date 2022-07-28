@@ -6,30 +6,21 @@ import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import SentimentVeryDissatisfiedSharpIcon from '@mui/icons-material/SentimentVeryDissatisfiedSharp';
 import Typography from '@mui/material/Typography';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import DataTable from "./table";
-import {unixToDateTime, timeDifference} from "../helper/datetime.js";
 import {randomHashGenerator} from "../helper/contract";
 import {validateAddress, validateAmount,} from "../helper/validate"
-import {ClickAwayListener} from "@mui/material";
+import {ClickAwayListener, Container} from "@mui/material";
 import {sampleColumns, sampleRows} from "../helper/sampleData"
+import BasicCard from "./txncard";
 
-// function Copyright(props) {
-//     return (
-//         <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//             {'Copyright © '}
-//             <Link color="inherit" href="https://mui.com/">
-//                 Your Website
-//             </Link>{' '}
-//             {new Date().getFullYear()}
-//             {'.'}
-//         </Typography>
-//     );
-// }
 
 const theme = createTheme();
+
+
+
 export default function SignInSide() {
 
     // Populate with sample data
@@ -115,8 +106,8 @@ export default function SignInSide() {
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
-                            <LockOutlinedIcon/>
+                        <Avatar sx={{m: 2, bgcolor: 'primary.main'}}>
+                            <SentimentVeryDissatisfiedSharpIcon/>
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             FancyForm
@@ -174,6 +165,9 @@ export default function SignInSide() {
                 </Grid>
                 <Grid item xs={false} sm={6} md={8}>
                     <br/>
+                    <Container>
+                        <BasicCard/>
+                    </Container>
                     <DataTable rowsNcol={rowsNcol}/>
                 </Grid>
             </Grid>

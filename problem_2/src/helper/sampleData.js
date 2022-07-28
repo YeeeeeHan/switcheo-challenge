@@ -6,7 +6,7 @@ export const sampleColumns = [
         field: 'date',
         headerName: 'date',
         type: 'date',
-        width: 220,
+        width: 210,
         valueFormatter: (params) => {
             // first converts to JS Date, then to locale option through date-fns
             return params.value;
@@ -22,13 +22,15 @@ export const sampleColumns = [
         headerName: 'age',
         description: 'This column has a value getter and is not sortable.',
         sortable: false,
-        width: 130,
+        width: 110,
         valueGetter: (params) => {
             return timeDifference(Date.now(), params.value)
         }
     },
     {field: 'to', headerName: 'To', width: 210},
-    {field: 'amount', type: 'number', headerName: 'amount', width: 100},
+    {field: 'amount', type: 'number', headerName: 'amount', width: 70},
+    {field: 'link', headerName: 'Link', width: 160,
+        renderCell: (params)=>(<a href="https://etherscan.io/tx/0x03060d63ae0ee2cd103bd950edce986eae08f8ca70bdb284d07ee7226cad2030">View Txn</a>)},
 ];
 
 export const sampleRows = [
