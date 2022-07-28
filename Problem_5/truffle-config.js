@@ -21,7 +21,7 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
 // const fs = require('fs');
-// const mnemonic = require("./secrets.json").mnemonic
+const mnemonic = require("./secrets.json").mnemonic
 
 module.exports = {
   /**
@@ -60,7 +60,7 @@ module.exports = {
     // Useful for deploying to a public network.
     // Note: It's important to wrap the provider as a function to ensure truffle uses a new provider every time.
     rinkeby: {
-      // provider: () => new HDWalletProvider(mnemonic, require("./secrets.json").infuralink),
+      provider: () => new HDWalletProvider(mnemonic, require("./secrets.json").infuralink),
       network_id: 4,
       gas: 4500000,
       gasPrice: 10000000000,
